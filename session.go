@@ -48,3 +48,30 @@ func (s *Session) Session(dc *ApiDesiredCapabilities) (err error) {
 	s.Capabilities = v.Value
 	return
 }
+
+func (s *Session) ListSessions() (sess *ApiSessions, err error) {
+	var (
+		req  *http.Request
+		res  *http.Response
+		body []byte
+	)
+
+	req, err = http.NewRequest("GET", s.Server+"/sessions", nil)
+	if err != nil {
+		return
+	}
+
+	res, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer res.Body.Close()
+	body, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return
+	}
+
+	json.Unmarshal(body, &sess)
+	return
+}

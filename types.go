@@ -85,3 +85,13 @@ type DesiredCapabilities struct {
 type ApiDesiredCapabilities struct {
 	DesiredCapabilities `json:"desiredCapabilities,omitempty"`
 }
+
+type SessionItem struct {
+	Id           string          `json:"id"`
+	Capabilities ApiCapabilities `json:"capabilities"`
+}
+
+type ApiSessions struct {
+	ApiMeta `json:",inline"`
+	Value   []SessionItem `json:"value"`
+}
