@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Screen</title>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    #top {
+        min-height: 50px;
+        background-color: #666;
+    }
+    
+    #ctrl {
+        margin: 5px 10px;
+        padding: 5px 10px;
+    }
+    
+    label {
+        top: 3px;
+        font: 800 20px bold;
+        color: white;
+    }
+    
+    #ctrl input {
+        height: 25px;
+    }
+    
+    #ctrl input.size {
+        height: 25px;
+        width: 50px;
+    }
+    
+    #ctrl input.id {
+        min-width: 260px;
+    }
+    
+    #ctrl input.btn {
+        width: 80px;
+        height: 25px;
+        box-shadow: inherit;
+        border: none;
+    }
+    
+    input.refresh {
+        top: 15px;
+        border: none;
+    }
+    
+    #main {
+        min-height: 1000px;
+        height: 100%;
+        width: 100%;
+        background-color: #11ddcc;
+    }
+    
+    #frame {
+        position: absolute;
+        top: 51px;
+        height: 100%;
+        width: 100%;
+        background-color: #ddd;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="top">
+        <div id="ctrl">
+            <label for="width">Width</label>
+            <input type="number" id="width" name="width" class="size" value="1024">
+            <label for="height">Height</label>
+            <input type="number" id="height" name="height" class="size" value="768">
+            <input type="button" id="size" name="size" class="btn" value="SET">
+            <label for="id">ID</label>
+            <input type="text" id="id" name="id" class="id" value="13ed3590-abd7-11e6-91ce-7b22f9f19ec9">
+            <input type="button" id="watch" name="watch" class="btn" value="Watch">
+            <input type="checkbox" id="refresh" class="refresh" name="refresh">
+        </div>
+    </div>
+    <iframe src="http://cn.bing.com" frameborder=0 id="frame">
+    </iframe>
+</body>
+<script type="text/javascript">
+var size = document.getElementById("size");
+var frame = document.getElementById("frame");
+var watch = document.getElementById("watch");
+
+
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function() {
+    if (this.readyState === 4) {
+        console.log(this.responseText);
+    }
+});
+size.onclick = function() {
+	var id = document.getElementById("id").value;
+	var height = document.getElementById("height").value;
+	var width = document.getElementById("width").value;
+
+	if (height < 400) {
+	    height = 400
+	}
+	if (width < 400) {
+	    width = 400
+	}
+    xhr.open("GET", "/size/" + id + "/" + height + "/" + width);
+    xhr.send();
+}
+
+watch.onclick = function() {
+	var id = document.getElementById("id").value;
+    frame.contentWindow.location = "/shot/" + id;
+}
+setInterval(function() {
+	var id = document.getElementById("id").value;
+    if (document.getElementById("refresh").checked) {
+        frame.contentWindow.location = "/shot/" + id;
+    }
+}, 5000);
+</script>
+
+</html>
