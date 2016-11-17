@@ -20,3 +20,9 @@ func TestListSessions(t *testing.T) {
 	assert.IsType(t, ApiCapabilities{}, list.Value[0].Capabilities)
 	id = list.Value[0].Id
 }
+
+func TestGetCapabilities(t *testing.T) {
+	capabilities, err := sess.GetCapabilities()
+	require.NoError(t, err)
+	assert.Equal(t, "phantomjs", capabilities.BrowserName)
+}
