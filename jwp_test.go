@@ -17,8 +17,8 @@ var (
 	cancel context.CancelFunc
 	cmd    *exec.Cmd
 
-	port string
-	sess *Session
+	port   string
+	client *Client
 )
 
 func init() {
@@ -47,10 +47,14 @@ func randPort() (hostport, host, port string) {
 	return
 }
 
+func TestDial(t *testing.T) {
+	client = Dial("http://127.0.0.1:" + port)
+	require.NotNil(t, client)
+}
+
 func TestNewSession(t *testing.T) {
-	session, err := New("http://127.0.0.1:" + port)
+	err := client.NewSession(&ApiDesiredCapabilities{})
 	require.NoError(t, err)
-	assert.NotNil(t, session.Capabilities)
-	assert.NotEmpty(t, session.SessionID)
-	sess = session
+	assert.NotNil(t, client.Capabilities)
+	assert.NotEmpty(t, client.SessionID)
 }

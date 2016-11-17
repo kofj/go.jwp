@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-type Session struct {
+type Client struct {
 	Server       string
 	SessionID    string
 	Capabilities ApiCapabilities
 }
 
-func (s *Session) Session(dc *ApiDesiredCapabilities) (err error) {
+func (s *Client) NewSession(dc *ApiDesiredCapabilities) (err error) {
 	var (
 		req  *http.Request
 		res  *http.Response
@@ -21,6 +21,10 @@ func (s *Session) Session(dc *ApiDesiredCapabilities) (err error) {
 		buf  = new(bytes.Buffer)
 		v    ApiSession
 	)
+
+	if dc.DesiredCapabilities.Proxy.ProxyType == "" {
+		dc.DesiredCapabilities.Proxy.ProxyType = "dirct"
+	}
 
 	err = json.NewEncoder(buf).Encode(dc)
 	if err != nil {
@@ -49,7 +53,7 @@ func (s *Session) Session(dc *ApiDesiredCapabilities) (err error) {
 	return
 }
 
-func (s *Session) ListSessions() (sess *ApiSessions, err error) {
+func (s *Client) ListSessions() (sess *ApiSessions, err error) {
 	var (
 		req  *http.Request
 		res  *http.Response
@@ -76,7 +80,7 @@ func (s *Session) ListSessions() (sess *ApiSessions, err error) {
 	return
 }
 
-func (s *Session) GetCapabilities() (caps *ApiCapabilities, err error) {
+func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 	var (
 		req  *http.Request
 		res  *http.Response

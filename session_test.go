@@ -12,7 +12,7 @@ var (
 )
 
 func TestListSessions(t *testing.T) {
-	list, err := sess.ListSessions()
+	list, err := client.ListSessions()
 	require.NoError(t, err)
 	require.NotNil(t, list)
 	assert.IsType(t, &ApiSessions{}, list)
@@ -22,7 +22,7 @@ func TestListSessions(t *testing.T) {
 }
 
 func TestGetCapabilities(t *testing.T) {
-	capabilities, err := sess.GetCapabilities()
+	capabilities, err := client.GetCapabilities()
 	require.NoError(t, err)
 	assert.Equal(t, "phantomjs", capabilities.BrowserName)
 }
