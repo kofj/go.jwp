@@ -1,15 +1,7 @@
 package jwp
 
-func New(addr string) (j *Session, err error) {
-	j = &Session{
+func Dial(addr string) *Client {
+	return &Client{
 		Server: addr,
 	}
-	err = j.Session(&ApiDesiredCapabilities{
-		DesiredCapabilities: DesiredCapabilities{
-			Proxy: Proxy{
-				ProxyType: "dirct",
-			},
-		},
-	})
-	return
 }
