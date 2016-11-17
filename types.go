@@ -44,6 +44,9 @@ type ApiCapabilities struct {
 	AcceptSslCerts           bool   `json:"acceptSslCerts"`
 	NativeEvents             bool   `json:"nativeEvents"`
 	Proxy                    `json:"proxy"`
+
+	// special
+	UserAgent string `json:"phantomjs.page.settings.userAgent,omitempty"`
 }
 type Proxy struct {
 	/* direct - A direct connection - no proxy in use,
@@ -78,8 +81,9 @@ type ApiSession struct {
 }
 
 type DesiredCapabilities struct {
-	TakesScreenshot bool  `json:"takesScreenshot,omitempty"`
-	Proxy           Proxy `json:"proxy,omitempty"`
+	UserAgent       string `json:"phantomjs.page.settings.userAgent,omitempty"`
+	TakesScreenshot bool   `json:"takesScreenshot,omitempty"`
+	Proxy           Proxy  `json:"proxy,omitempty"`
 }
 
 type ApiDesiredCapabilities struct {

@@ -53,8 +53,11 @@ func TestDial(t *testing.T) {
 }
 
 func TestNewSession(t *testing.T) {
-	err := client.NewSession(&ApiDesiredCapabilities{})
+	dc := &ApiDesiredCapabilities{}
+	dc.DesiredCapabilities.UserAgent = Chrome54
+	err := client.NewSession(dc)
 	require.NoError(t, err)
+	assert.Equal(t, Chrome54, client.Capabilities.UserAgent)
 	assert.NotNil(t, client.Capabilities)
 	assert.NotEmpty(t, client.SessionID)
 }
