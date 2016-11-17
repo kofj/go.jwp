@@ -75,3 +75,34 @@ func (s *Session) ListSessions() (sess *ApiSessions, err error) {
 	json.Unmarshal(body, &sess)
 	return
 }
+
+func (s *Session) GetCapabilities() (caps *ApiCapabilities, err error) {
+	var (
+		req  *http.Request
+		res  *http.Response
+		body []byte
+		sess ApiSession
+	)
+
+	req, err = http.NewRequest("GET", s.Server+"/session/"+s.SessionID, nil)
+	if err != nil {
+		return
+	}
+
+	res, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer res.Body.Close()
+	body, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return
+	}
+
+	json.Unmarshal(body, &sess)
+	s.Capabilities = sess.Value
+	caps = &s.Capabilities
+
+	return
+}
