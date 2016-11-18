@@ -3,6 +3,7 @@ package jwp
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -108,5 +109,39 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 	s.Capabilities = sess.Value
 	caps = &s.Capabilities
 
+	return
+}
+
+func (c *Client) Delete() (err error) {
+	var (
+		req  *http.Request
+		res  *http.Response
+		body []byte
+		ret  ApiMeta
+	)
+
+	req, err = http.NewRequest("DELETE", c.Server+"/session/"+c.SessionID, nil)
+	if err != nil {
+		return
+	}
+
+	res, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer res.Body.Close()
+	body, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
+		return
+	}
+	if ret.Status != 0 {
+		return fmt.Errorf("Server status code is %d.", ret.Status)
+	}
 	return
 }
