@@ -49,6 +49,10 @@ func (s *Client) NewSession(dc *ApiDesiredCapabilities) (err error) {
 	}
 
 	json.Unmarshal(body, &v)
+	if v.Status != 0 {
+		return fmt.Errorf("Server status code is %d.", v.Status)
+	}
+
 	s.SessionID = v.SessionId
 	s.Capabilities = v.Value
 	return
@@ -78,6 +82,9 @@ func (s *Client) ListSessions() (sess *ApiSessions, err error) {
 	}
 
 	json.Unmarshal(body, &sess)
+	if sess.Status != 0 {
+		return nil, fmt.Errorf("Server status code is %d.", sess.Status)
+	}
 	return
 }
 
@@ -106,6 +113,10 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 	}
 
 	json.Unmarshal(body, &sess)
+	if sess.Status != 0 {
+		return nil, fmt.Errorf("Server status code is %d.", sess.Status)
+	}
+
 	s.Capabilities = sess.Value
 	caps = &s.Capabilities
 
