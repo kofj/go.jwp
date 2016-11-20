@@ -19,7 +19,7 @@ func (s *Client) NewSession(dc *ApiDesiredCapabilities) (err error) {
 		res  *http.Response
 		body []byte
 		buf  = new(bytes.Buffer)
-		v    ApiSession
+		resp ApiSession
 	)
 
 	if dc.DesiredCapabilities.Proxy.ProxyType == "" {
@@ -51,17 +51,17 @@ func (s *Client) NewSession(dc *ApiDesiredCapabilities) (err error) {
 		return
 	}
 
-	json.Unmarshal(body, &v)
-	if err = CheckStatus(v.Status); err != nil {
+	json.Unmarshal(body, &resp)
+	if err = CheckStatus(resp.Status); err != nil {
 		return
 	}
 
-	s.SessionID = v.SessionId
-	s.Capabilities = v.Value
+	s.SessionID = resp.SessionId
+	s.Capabilities = resp.Value
 	return
 }
 
-func (s *Client) ListSessions() (sess *ApiSessions, err error) {
+func (s *Client) ListSessions() (resp *ApiSessions, err error) {
 	var (
 		req  *http.Request
 		res  *http.Response
@@ -88,8 +88,8 @@ func (s *Client) ListSessions() (sess *ApiSessions, err error) {
 		return
 	}
 
-	json.Unmarshal(body, &sess)
-	if err = CheckStatus(sess.Status); err != nil {
+	json.Unmarshal(body, &resp)
+	if err = CheckStatus(resp.Status); err != nil {
 		return
 	}
 	return
@@ -100,7 +100,7 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 		req  *http.Request
 		res  *http.Response
 		body []byte
-		sess ApiSession
+		resp ApiSession
 	)
 
 	req, err = http.NewRequest("GET", s.Server+"/session/"+s.SessionID, nil)
@@ -123,12 +123,12 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 		return
 	}
 
-	json.Unmarshal(body, &sess)
-	if err = CheckStatus(sess.Status); err != nil {
+	json.Unmarshal(body, &resp)
+	if err = CheckStatus(resp.Status); err != nil {
 		return
 	}
 
-	s.Capabilities = sess.Value
+	s.Capabilities = resp.Value
 	caps = &s.Capabilities
 
 	return
@@ -139,7 +139,7 @@ func (c *Client) Delete() (err error) {
 		req  *http.Request
 		res  *http.Response
 		body []byte
-		ret  ApiMeta
+		resp ApiMeta
 	)
 
 	req, err = http.NewRequest("DELETE", c.Server+"/session/"+c.SessionID, nil)
@@ -162,11 +162,11 @@ func (c *Client) Delete() (err error) {
 		return
 	}
 
-	err = json.Unmarshal(body, &ret)
+	err = json.Unmarshal(body, &resp)
 	if err != nil {
 		return
 	}
-	if err = CheckStatus(ret.Status); err != nil {
+	if err = CheckStatus(resp.Status); err != nil {
 		return
 	}
 	return
