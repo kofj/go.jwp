@@ -99,3 +99,13 @@ type ApiSessions struct {
 	ApiMeta `json:",inline"`
 	Value   []SessionItem `json:"value"`
 }
+
+type WindowSize struct {
+	Height int `json:"height"`
+	Width  int `json:"width"`
+}
+
+type ApiWindowSize struct {
+	ApiMeta `json:",inline"`
+	Value   WindowSize `json:"value"`
+}
