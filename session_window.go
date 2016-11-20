@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) GetCurrentWindowSize() (size WindowSize, err error) {
+func (c *Client) GetCurrentWindowSize() (size *WindowSize, err error) {
 	var (
 		req  *http.Request
 		res  *http.Response
@@ -39,7 +39,7 @@ func (c *Client) GetCurrentWindowSize() (size WindowSize, err error) {
 		return
 	}
 
-	size = resp.Value
+	size = &resp.Value
 
 	return
 }
