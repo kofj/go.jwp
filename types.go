@@ -109,3 +109,8 @@ type ApiWindowSize struct {
 	ApiMeta `json:",inline"`
 	Value   WindowSize `json:"value"`
 }
+
+type ApiURL struct {
+	ApiMeta `json:",inline"`
+	Value   string `json:"value"`
+}
