@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCurrentWindowSize(t *testing.T) {
+func TestGetCurrentWindowSize(t *testing.T) {
 	size, err := client.GetCurrentWindowSize()
 	require.NoError(t, err)
 	assert.Equal(t, 300, size.Height)
