@@ -95,7 +95,7 @@ func (s *Client) ListSessions() (resp *ApiSessions, err error) {
 	return
 }
 
-func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
+func (c *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 	var (
 		req  *http.Request
 		res  *http.Response
@@ -103,7 +103,7 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 		resp ApiSession
 	)
 
-	req, err = http.NewRequest("GET", s.Server+"/session/"+s.SessionID, nil)
+	req, err = http.NewRequest("GET", c.Server+"/session/"+c.SessionID, nil)
 	if err != nil {
 		return
 	}
@@ -128,8 +128,8 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 		return
 	}
 
-	s.Capabilities = resp.Value
-	caps = &s.Capabilities
+	c.Capabilities = resp.Value
+	caps = &c.Capabilities
 
 	return
 }
