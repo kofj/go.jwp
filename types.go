@@ -123,3 +123,7 @@ type ExecuteScript struct {
 	Script string                   `json:"script"`
 	Args   []map[string]interface{} `json:"args"`
 }
+type ApiExecuteScriptResult struct {
+	ApiMeta `json:",inline"`
+	Value   string `json:"value"`
+}
