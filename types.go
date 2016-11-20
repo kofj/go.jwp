@@ -118,3 +118,8 @@ type ApiURL struct {
 	ApiMeta `json:",inline"`
 	Value   string `json:"value"`
 }
+
+type ExecuteScript struct {
+	Script string                   `json:"script"`
+	Args   []map[string]interface{} `json:"args"`
+}
