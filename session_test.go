@@ -17,6 +17,7 @@ func TestListSessions(t *testing.T) {
 	require.NotNil(t, list)
 	assert.IsType(t, &ApiSessions{}, list)
 	assert.IsType(t, []SessionItem{}, list.Value)
+	require.NotEmpty(t, list.Value)
 	assert.IsType(t, ApiCapabilities{}, list.Value[0].Capabilities)
 	id = list.Value[0].Id
 }
