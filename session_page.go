@@ -86,3 +86,15 @@ func (c *Client) Open(url string) (err error) {
 
 	return
 }
+
+// POST /session/:sessionId/forward
+// Navigate forwards in the browser history, if possible.
+func (c *Client) Forward() (err error) {}
+
+// POST /session/:sessionId/back
+// Navigate backwards in the browser history, if possible.
+func (c *Client) Back() (err error) {}
+
+// POST /session/:sessionId/refresh
+// Refresh the current page.
+func (c *Client) Refresh() (err error) {}
