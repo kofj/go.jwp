@@ -3,7 +3,6 @@ package jwp
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -53,8 +52,8 @@ func (s *Client) NewSession(dc *ApiDesiredCapabilities) (err error) {
 	}
 
 	json.Unmarshal(body, &v)
-	if v.Status != 0 {
-		return fmt.Errorf("Server status code is %d.", v.Status)
+	if err = CheckStatus(v.Status); err != nil {
+		return
 	}
 
 	s.SessionID = v.SessionId
@@ -90,8 +89,8 @@ func (s *Client) ListSessions() (sess *ApiSessions, err error) {
 	}
 
 	json.Unmarshal(body, &sess)
-	if sess.Status != 0 {
-		return nil, fmt.Errorf("Server status code is %d.", sess.Status)
+	if err = CheckStatus(sess.Status); err != nil {
+		return
 	}
 	return
 }
@@ -125,8 +124,8 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 	}
 
 	json.Unmarshal(body, &sess)
-	if sess.Status != 0 {
-		return nil, fmt.Errorf("Server status code is %d.", sess.Status)
+	if err = CheckStatus(sess.Status); err != nil {
+		return
 	}
 
 	s.Capabilities = sess.Value
@@ -167,8 +166,8 @@ func (c *Client) Delete() (err error) {
 	if err != nil {
 		return
 	}
-	if ret.Status != 0 {
-		return fmt.Errorf("Server status code is %d.", ret.Status)
+	if err = CheckStatus(ret.Status); err != nil {
+		return
 	}
 	return
 }
