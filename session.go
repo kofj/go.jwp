@@ -48,6 +48,10 @@ func (s *Client) NewSession(dc *ApiDesiredCapabilities) (err error) {
 		return
 	}
 
+	if err = CheckHTTPStatus(res, body); err != nil {
+		return
+	}
+
 	json.Unmarshal(body, &v)
 	if v.Status != 0 {
 		return fmt.Errorf("Server status code is %d.", v.Status)
@@ -81,6 +85,10 @@ func (s *Client) ListSessions() (sess *ApiSessions, err error) {
 		return
 	}
 
+	if err = CheckHTTPStatus(res, body); err != nil {
+		return
+	}
+
 	json.Unmarshal(body, &sess)
 	if sess.Status != 0 {
 		return nil, fmt.Errorf("Server status code is %d.", sess.Status)
@@ -109,6 +117,10 @@ func (s *Client) GetCapabilities() (caps *ApiCapabilities, err error) {
 	defer res.Body.Close()
 	body, err = ioutil.ReadAll(res.Body)
 	if err != nil {
+		return
+	}
+
+	if err = CheckHTTPStatus(res, body); err != nil {
 		return
 	}
 
@@ -144,6 +156,10 @@ func (c *Client) Delete() (err error) {
 	defer res.Body.Close()
 	body, err = ioutil.ReadAll(res.Body)
 	if err != nil {
+		return
+	}
+
+	if err = CheckHTTPStatus(res, body); err != nil {
 		return
 	}
 
